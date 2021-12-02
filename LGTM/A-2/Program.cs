@@ -1,8 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using System.Xml;
 using A_2;
 
 static class Program
@@ -32,9 +34,6 @@ static class Program
         // var puzzlePostResponse = await client.PostAsJsonAsync<List<int>>(puzzleUrl, puzzleAnswer);
         // Console.WriteLine(await puzzlePostResponse.Content.ReadAsStringAsync());
         
-        
-        
-        
     }
     
     // recursion again
@@ -46,29 +45,44 @@ static class Program
     public static List<int> Solve(int start, int destination)
     {
         List<int> steps = new ();
+        int maxLength = destination;
+        
         Recurse(start, destination, 1, steps);
+        
         steps.Add(start);
         steps.Reverse();
+        
+        
         return steps;
     }
 
     public static bool Recurse(int cur, int destination, int stepSize, List<int> steps)
     {
+        // To find the shortest route we just limit our algorithm
+        // allow a failure if no paths have been found yet at this depth
+        // Console.WriteLine(stepSize);
+        if (stepSize >= destination) return false;
         if (cur + stepSize == destination || cur - stepSize == destination)
         {
             steps.Add(destination);
             return true;
         }
         {
-            if (Recurse(cur - stepSize, destination, stepSize+1, steps))
+            if (cur + stepSize <= destination)
             {
-                steps.Add(cur + stepSize);
-                return true;
+                if (Recurse(cur + stepSize, destination, stepSize + 1, steps))
+                {
+                    steps.Add(cur + stepSize);
+                    return true;
+                }
             }
-            if (Recurse(cur + stepSize, destination, stepSize+1, steps))
+
             {
-                steps.Add(cur + stepSize);
-                return true;
+                if (Recurse(cur - stepSize, destination, stepSize + 1, steps))
+                {
+                    steps.Add(cur - stepSize);
+                    return true;
+                }
             }
             return false;
         }
