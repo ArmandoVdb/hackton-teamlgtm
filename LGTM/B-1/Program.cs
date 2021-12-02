@@ -42,7 +42,6 @@ static class Program
         stringsPuzzle.Add(puzzleGetResponse.date1);
         stringsPuzzle.Add(puzzleGetResponse.date2);
         var puzzleAnswer = Solve(stringsPuzzle);
-
         
         
         // We sturen het antwoord met een POST request
@@ -96,7 +95,7 @@ static class Program
                         seconds = int.Parse(digits[i].ToString());
                         break;
                     default:
-                        Console.WriteLine("Couldn't parse: " + letters[i].ToString());
+                        Console.WriteLine("Couldn't parse: " + letters[i]);
                         break;
                 }
             }
@@ -111,8 +110,5 @@ static class Program
             j++;
         }
         return  Math.Abs((dt1 - dt2).TotalSeconds).ToString();
-        
-        
-        
     }
 }
