@@ -78,6 +78,7 @@ static class Program
             }
         }
 
+        
         //check amount of patterns with usage higher than 1
         foreach (KeyValuePair<string, int> keyValuePair in patterns)
         {
