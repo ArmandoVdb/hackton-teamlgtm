@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LGTM", "LGTM\LGTM.csproj", "{D6D6D921-AD0E-4309-83C0-02D4F57CE2CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A-1", "A-1\A-1.csproj", "{FA10790D-4080-43E4-AC26-04B164415C07}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6D6D921-AD0E-4309-83C0-02D4F57CE2CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D6D921-AD0E-4309-83C0-02D4F57CE2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D6D921-AD0E-4309-83C0-02D4F57CE2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D6D921-AD0E-4309-83C0-02D4F57CE2CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA10790D-4080-43E4-AC26-04B164415C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA10790D-4080-43E4-AC26-04B164415C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA10790D-4080-43E4-AC26-04B164415C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA10790D-4080-43E4-AC26-04B164415C07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
