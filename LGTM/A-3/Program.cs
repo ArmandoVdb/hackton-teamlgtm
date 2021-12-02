@@ -13,32 +13,32 @@ static class Program
     static async Task Main(string[] args)
     {
         var client = LGTM.Our.Client();
-        var sampleUrl = "/api/path/1/hard/Sample";
-        var sampleResponse = await client.GetFromJsonAsync<Response>(sampleUrl);
+        //
+        // var sampleUrl = "/api/path/1/hard/Sample";
+        // var sampleResponse = await client.GetFromJsonAsync<Response>(sampleUrl);
+        // var sampleAnswer = Solve(sampleResponse.Tiles);
+        // var samplePostResponse = await client.PostAsJsonAsync<List<int>>(sampleUrl, sampleAnswer);
+        // Console.WriteLine(await samplePostResponse.Content.ReadAsStringAsync());
 
-        foreach (var tile in sampleResponse.Tiles)
-        {
-            Console.WriteLine(tile);
-        }
         
-        Solve(sampleResponse.Tiles);
+        var puzzleUrl = "/api/path/1/hard/Puzzle";
+        var puzzleResponse = await client.GetFromJsonAsync<Response>(puzzleUrl);
+        var puzzleAnswer = Solve(puzzleResponse.Tiles);
+        var puzzlePostResponse = await client.PostAsJsonAsync<List<int>>(puzzleUrl, puzzleAnswer);
+        Console.WriteLine(await puzzlePostResponse.Content.ReadAsStringAsync());
+        
+        
     }
 
-    static void Solve(List<Tile> tiles)
+    static List<int> Solve(List<Tile> tiles)
     {
-        Tile[,] grid = new Tile[tiles.Max(t => t.X), tiles.Max(t => t.Y)];
-        foreach (var tile in tiles)
-        {
-            grid[tile.X, tile.Y] = tile;
-        }
-
         List<int> start = new List<int>();
 
         List<List<int>> possibilities = new();
         List<int> solution = null;
         
-        start.Add(0);
-
+        start.Add(1);
+        possibilities.Add(start);
         do
         {
             List<List<int>> newPossibilities = new List<List<int>>();
@@ -47,11 +47,11 @@ static class Program
                 Tile curTile = tiles.Find(t => t.Id == possibility.Last());
                 List<int> horizontalMovement = new();
                 List<int> verticalMovement = new();
-                int posY;
-                int posX;
+                int posY = curTile.Y;
+                int posX = curTile.X;
                 if (curTile.Direction == Directions.End)
                 {
-                    if (possibility.Count == grid.Length)
+                    if (possibility.Count == tiles.Count)
                     {
                         solution = possibility;
                         break;
@@ -66,9 +66,8 @@ static class Program
                     posY = curTile.Y;
                     while (posY < tiles.Max(t => t.Y))
                     {
-                        verticalMovement.Add(posY++);
+                        verticalMovement.Add(++posY);
                     }
-                    break;
                 }
                 if (curTile.Direction == Directions.Up ||
                     curTile.Direction == Directions.UpLeft ||
@@ -76,11 +75,10 @@ static class Program
                 )
                 {
                     posY = curTile.Y;
-                    while (posY < tiles.Min(t => t.Y))
+                    while (posY > tiles.Min(t => t.Y))
                     {
-                        verticalMovement.Add(posY--);
+                        verticalMovement.Add(--posY);
                     }
-                    break;
                 }
                 if (curTile.Direction == Directions.Right ||
                     curTile.Direction == Directions.UpRight ||
@@ -90,9 +88,8 @@ static class Program
                     posX = curTile.X;
                     while (posX < tiles.Max(t => t.X))
                     {
-                        horizontalMovement.Add(posX++);
+                        horizontalMovement.Add(++posX);
                     }
-                    break;
                 }
                 if (curTile.Direction == Directions.Left ||
                     curTile.Direction == Directions.UpLeft ||
@@ -100,18 +97,19 @@ static class Program
                 )
                 {
                     posX = curTile.X;
-                    while (posX < tiles.Min(t => t.X))
+                    while (posX > tiles.Min(t => t.X))
                     {
-                        horizontalMovement.Add(posX--);
+                        horizontalMovement.Add(--posX);
                     }
-                    break;
                 }
 
                 List<Tile> possibleTiles = new List<Tile>();
-                for (int i = 0; i < horizontalMovement.Count && i < verticalMovement.Count; i++)
+                for (int i = 0; i < horizontalMovement.Count || i < verticalMovement.Count; i++)
                 {
-                    Tile tile = grid[verticalMovement[i], horizontalMovement[i]];
-                    if(!tile.Visited)
+                    int newX = (horizontalMovement.Count > i ? horizontalMovement[i] : curTile.X);
+                    int newY = (verticalMovement.Count > i ? verticalMovement[i] : curTile.Y);
+                    Tile tile = tiles.SingleOrDefault(t => t.X == newX && t.Y == newY);
+                    if(!possibility.Contains(tile.Id))
                         possibleTiles.Add(tile);
                 }
 
@@ -121,8 +119,8 @@ static class Program
                     newPossibility.Add(possibleTile.Id);
                     newPossibilities.Add(newPossibility);
                 }
-                possibilities = newPossibilities;
             }
+            possibilities = newPossibilities;
         } while (solution == null);
 
         foreach (int x in solution)
@@ -130,6 +128,7 @@ static class Program
             Console.WriteLine(x);
         }
 
+        return solution;
     }
 
 }
