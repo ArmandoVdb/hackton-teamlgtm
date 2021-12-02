@@ -22,7 +22,6 @@ static class Program
         Console.WriteLine("Puzzle answer is: " + puzzleAnswer);
         var puzzlePostResponse = await client.PostAsJsonAsync<int>(puzzleUrl, puzzleAnswer);
         Console.WriteLine(await puzzlePostResponse.Content.ReadAsStringAsync());
-        
     }
 
     // algorithm is
